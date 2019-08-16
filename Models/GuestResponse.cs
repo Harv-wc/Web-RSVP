@@ -8,6 +8,7 @@ namespace Lab_7D.Models
 {
     public class GuestResponse
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Please enter your name")]
         public string Name { get; set; }
         [Required(ErrorMessage ="Please enter your email address")]

@@ -10,8 +10,10 @@ namespace Lab_7D.Controllers
 {
     public class HomeController : Controller
     {
+        Repository _dbContext = new Repository();
         public ViewResult Index()
         {
+            _dbContext.Database.EnsureCreated();
             int hour = DateTime.Now.Hour;
             ViewBag.Greeting = hour < 12 ? "Good Morning" : "Good Afternoon";
             return View("MyView");
@@ -27,7 +29,8 @@ namespace Lab_7D.Controllers
         {
             if (ModelState.IsValid)
             {
-                Repository.AddResponse(guestResponse);
+                _dbContext.GuestResponses.Add(guestResponse);
+                _dbContext.SaveChanges();
                 return View("Thanks", guestResponse);
             } else
             {
@@ -38,7 +41,7 @@ namespace Lab_7D.Controllers
 
         public ViewResult ListResponses()
         {
-            return View(Repository.Responses.Where(r => r.WillAttend == true));
+            return View(_dbContext.GuestResponses.Where(r => r.WillAttend == true));
         }
     }
 }
